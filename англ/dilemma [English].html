@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Dilemma: Quality vs Speed | Hackathon</title>
+    <title>Dilemma: Quality vs Speed | Hackathon | ACM Ethics</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,8 +14,8 @@
     <footer>🏆 Hackathon • Quality vs Speed • Your Choice Shapes Your Destiny</footer>
 </div>
 
-<!-- Основная кнопка озвучивания (справа снизу) - для основного текста раунда -->
-<div class="speaker-icon" id="speakerBtn" title="Озвучить основной текст раунда">
+<!-- Основная кнопка озвучивания -->
+<div class="speaker-icon" id="speakerBtn" title="Озвучить основной текст">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
     </svg>
@@ -30,31 +30,26 @@
 
     let currentSpeakText = "";
 
-    // ===== ФУНКЦИЯ ДЛЯ ВОСПРОИЗВЕДЕНИЯ MP3 =====
-    let currentAudio = null;
-    function playAudioFile(fileName) {
-        if (!fileName) return;
-        if (currentAudio) {
-            currentAudio.pause();
-            currentAudio.currentTime = 0;
-        }
-        const audio = new Audio(`audio/${fileName}`);
-        currentAudio = audio;
-        audio.play().catch(e => console.log('Audio play error:', e));
-        return audio;
-    }
-    // ============================================
-
     function speakText(text) {
         if (!text) return;
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'en-US';
+        utterance.lang = 'ru-RU';
         utterance.rate = 0.92;
         window.speechSynthesis.speak(utterance);
     }
 
-    // ========== СЦЕНАРИИ ==========
+    function speakContextOnly(contextText) {
+        if (!contextText) return;
+        window.speechSynthesis.cancel();
+        let cleanText = contextText.replace(/^[💬📌]\s*/, '');
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        utterance.lang = 'ru-RU';
+        utterance.rate = 0.92;
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // ========== СЦЕНАРИИ (на английском) ==========
     const scenarios = {
         round1: {
             icon: "⚡",
@@ -62,8 +57,6 @@
             description: "Your team is participating in a hackathon. You have 2 hours left until project submission, and the key feature still isn't working. The manager writes in the chat: «It's better to deliver something that works than something perfect but empty».",
             context: "💬 Team Lead: «We have a quick-and-dirty workaround that'll last about 30 minutes. Either we do it properly—but then we risk not finishing at all».",
             question: "What will you do?",
-            mainAudioFile: "round1.mp3",
-            contextAudioFile: "round1-team-lead.mp3",
             choices: [
                 { text: "⚡ Quick fix. The main thing is to deliver", type: "speed", nextId: "round2_s" },
                 { text: "🔵 Do it properly or not at all", type: "quality", nextId: "round2_q" }
@@ -75,8 +68,6 @@
             description: "You submitted the project on time. The judges ran the demo — everything works. But the code contains hardcoded data and completely lacks error handling. One of the judges, a technical specialist, asks to see the source code.",
             context: "💬 Teammate: «If he digs into the code, we'll get laughed at. But if we don't show it, that looks suspicious».",
             question: "What will you tell the judge?",
-            mainAudioFile: "speed.mp3",
-            contextAudioFile: "speed-teammate.mp3",
             choices: [
                 { text: "⚡ Let's show it. It's an MVP, and we're honest about our technical debt", type: "speed", nextId: "round3_ss" },
                 { text: "🔵 We'll distract them with the demo and won't show the code", type: "quality", nextId: "round3_sq" }
@@ -88,8 +79,6 @@
             description: "You built a clean architecture, wrote tests, and documented the API. But you only managed to implement 40% of the features. The project formally doesn't meet the hackathon requirements.",
             context: "💬 Organizer: «Technically impressive, but you don't meet the criteria. We can give you another 30 minutes—but you'll have to cut corners».",
             question: "Will you take the extra time?",
-            mainAudioFile: "quality.mp3",
-            contextAudioFile: "quality-organizer.mp3",
             choices: [
                 { text: "⚡ Yes, let's add at least something working in 30 minutes", type: "speed", nextId: "round3_qs" },
                 { text: "🔵 No. Let them judge us on what we have", type: "quality", nextId: "round3_qq" }
@@ -101,8 +90,6 @@
             description: "The judge praised your transparency. Your team took 3rd place. A startup investor offers you a small grant—on the condition that you polish the product to a working state within a week.",
             context: "💬 Investor: «Time-to-market is what matters to me. Refactoring can wait. Are you ready to ship fast?»",
             question: "Will you take the grant under these terms?",
-            mainAudioFile: "speed-speed.mp3",
-            contextAudioFile: "speed-speed-investor.mp3",
             choices: [
                 { text: "⚡ We'll take it. Speed is our strength", type: "speed", nextId: "end_sss" },
                 { text: "🔵 We'll take it, but we insist on refactoring first", type: "quality", nextId: "end_ssq" }
@@ -114,8 +101,6 @@
             description: "One of the participants photographed the screen. A screenshot with a hardcoded password to the test database ended up in the hackathon chat. A small scandal, but an unpleasant one.",
             context: "💬 Organizer: «We won't disqualify you, but we expect a public explanation of what happened».",
             question: "How do you respond?",
-            mainAudioFile: "speed-quality.mp3",
-            contextAudioFile: "speed-quality-organizer.mp3",
             choices: [
                 { text: "⚡ We publicly admit the mistake and move on", type: "speed", nextId: "end_sqs" },
                 { text: "🔵 We explain technically: it's test data, no threat", type: "quality", nextId: "end_sqq" }
@@ -127,8 +112,6 @@
             description: "In half an hour, you slapped together three more features—no tests, no validation. One of them crashes right during the demo in front of the judges. The judges exchange glances.",
             context: "💬 Team Lead whispers: «We could blame it on an unstable network. Or we could come clean».",
             question: "What do you tell the judges?",
-            mainAudioFile: "quality-speed.mp3",
-            contextAudioFile: "quality-speed-team-lead.mp3",
             choices: [
                 { text: "⚡ We blame the network and move on", type: "speed", nextId: "end_qss" },
                 { text: "🔵 We explain honestly: the feature is rough, we added it at the last minute", type: "quality", nextId: "end_qsq" }
@@ -140,8 +123,6 @@
             description: "The judges decide to evaluate not just the demo, but the code quality as well. Your project is one of two to advance to the finals based on this criterion. The competitor submitted a complete product, but with a mountain of technical debt.",
             context: "💬 Technical Judge: «Your architecture is the best at this hackathon. But there's barely a product. Tell us how this happened».",
             question: "How do you explain your choice?",
-            mainAudioFile: "quality-quality.mp3",
-            contextAudioFile: "quality-quality-judge.mp3",
             choices: [
                 { text: "⚡ «We overestimated our capabilities—we'll find a balance next time»", type: "speed", nextId: "end_qqs" },
                 { text: "🔵 «We consciously prioritized quality. Scaling bad code is worse than polishing good code»", type: "quality", nextId: "end_qqq" }
@@ -149,7 +130,7 @@
         }
     };
 
-    // ========== 8 КОНЦОВОК ==========
+    // ========== 8 КОНЦОВОК С ЭТИЧЕСКИМ АНАЛИЗОМ (ТОЛЬКО НА АНГЛИЙСКОМ) ==========
     const endings = {
         end_sss: {
             emoji: "💀",
@@ -159,7 +140,16 @@
             lesson: "📌 Lesson: Speed at any cost kills products. Debt accumulates exponentially.",
             acmLink: "https://dl.acm.org/doi/10.1145/3540250.3549088",
             acmText: "ACM: Technical Debt in Startups →",
-            mainAudioFile: "speed-speed-speed.mp3"
+            ethicsAnalysis: `
+                <div class="ethics-analysis">
+                    <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
+                    <strong>ACM §1.2 (Avoid Harm):</strong> Prioritizing speed over stability directly harmed users—the service crashed within the first hour.<br><br>
+                    <strong>ACM §2.1 (Public Good):</strong> Team well-being was compromised by 24/7 hotfixes and burnout.<br><br>
+                    <strong>ACM §2.3 (Professional Competence):</strong> Skipping testing and refactoring violated the duty of professional thoroughness.<br><br>
+                    <strong>ACM §3.2 (Competence):</strong> The team accepted work beyond their capacity to deliver safely.<br><br>
+                    <strong>🔍 Verdict:</strong> Multiple ACM principles violated. This path represents ethical failure at every step.
+                </div>
+            `
         },
         end_ssq: {
             emoji: "🔄",
@@ -169,7 +159,15 @@
             lesson: "📌 Lesson: Refactoring is possible, but better not to push it to the breaking point.",
             acmLink: "https://dl.acm.org/doi/10.1145/3368089.3409742",
             acmText: "ACM: When Refactoring Can't Save You →",
-            mainAudioFile: "speed-speed-quality.mp3"
+            ethicsAnalysis: `
+                <div class="ethics-analysis">
+                    <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
+                    <strong>ACM §2.1 (Public Good):</strong> By insisting on refactoring, you prioritized the product's long-term reliability.<br><br>
+                    <strong>ACM §2.5 (Assess and Manage Risk):</strong> You took responsibility for technical debt and allocated resources to reduce it.<br><br>
+                    <strong>ACM §3.3 (Transparent Communication):</strong> You were transparent with the investor about the need for refactoring.<br><br>
+                    <strong>✅ Verdict:</strong> Mixed outcome—ethically responsible, but too late. Address debt earlier.
+                </div>
+            `
         },
         end_sqs: {
             emoji: "🎭",
@@ -179,7 +177,15 @@
             lesson: "📌 Lesson: Lies in the IT community destroy reputations faster than any bug.",
             acmLink: "https://dl.acm.org/doi/10.1145/3183399",
             acmText: "ACM: Ethics and Trust in Development →",
-            mainAudioFile: "speed-quality-speed.mp3"
+            ethicsAnalysis: `
+                <div class="ethics-analysis">
+                    <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
+                    <strong>ACM §1.3 (Honesty and Trustworthiness):</strong> Blaming the network was a direct lie. The ACM Code requires professionals to be honest.<br><br>
+                    <strong>ACM §1.6 (Respect Privacy / Data Integrity):</strong> The leaked hardcoded password demonstrated disregard for security practices.<br><br>
+                    <strong>ACM §2.6 (Professional Reputation):</strong> Dishonesty harms not only your reputation but also trust in the entire profession.<br><br>
+                    <strong>🔴 Verdict:</strong> Severe ethics violation. Lies destroy trust permanently.
+                </div>
+            `
         },
         end_sqq: {
             emoji: "🌱",
@@ -189,7 +195,15 @@
             lesson: "📌 Lesson: Honesty under pressure is a rare and valuable skill.",
             acmLink: "https://dl.acm.org/doi/10.1145/3377811.3380370",
             acmText: "ACM: Reflection in Teams →",
-            mainAudioFile: "speed-quality-quality.mp3"
+            ethicsAnalysis: `
+                <div class="ethics-analysis">
+                    <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
+                    <strong>ACM §1.3 (Honesty):</strong> You demonstrated ethical courage by publicly admitting the mistake.<br><br>
+                    <strong>ACM §2.2 (Continuous Learning):</strong> Using failure as a learning opportunity aligns with ACM principles.<br><br>
+                    <strong>ACM §3.3 (Transparency):</strong> Full disclosure of technical limitations serves stakeholders' right to know.<br><br>
+                    <strong>✅ Verdict:</strong> An ethical exemplar. Honest failure builds more long-term trust than hidden success.
+                </div>
+            `
         },
         end_qss: {
             emoji: "💔",
@@ -199,7 +213,15 @@
             lesson: "📌 Lesson: Quality can be destroyed in half an hour. Don't change strategy at the last minute.",
             acmLink: "https://dl.acm.org/doi/10.1145/3540250.3549093",
             acmText: "ACM: Managing Quality Under Pressure →",
-            mainAudioFile: "quality-speed-speed.mp3"
+            ethicsAnalysis: `
+                <div class="ethics-analysis">
+                    <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
+                    <strong>ACM §2.3 (Professional Competence):</strong> Adding untested features at the last minute violated professional thoroughness.<br><br>
+                    <strong>ACM §1.2 (Avoid Harm):</strong> Unstable demo confused the team and disappointed stakeholders.<br><br>
+                    <strong>ACM §4.1 (Team Culture):</strong> Panic-driven decisions create a toxic environment.<br><br>
+                    <strong>⚠️ Verdict:</strong> Quality takes months to build and minutes to destroy. Panic is no excuse for abandoning ethics.
+                </div>
+            `
         },
         end_qsq: {
             emoji: "⚖️",
@@ -209,7 +231,15 @@
             lesson: "📌 Lesson: Balancing speed and quality is an art—and it pays off.",
             acmLink: "https://dl.acm.org/doi/10.1145/3368089.3409701",
             acmText: "ACM: Finding Balance in Teams →",
-            mainAudioFile: "quality-speed-quality.mp3"
+            ethicsAnalysis: `
+                <div class="ethics-analysis">
+                    <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
+                    <strong>ACM §2.1 (Stakeholder Value):</strong> You balanced competing demands—speed for business, quality for users.<br><br>
+                    <strong>ACM §3.2 (Competence):</strong> You accurately assessed the team's capabilities under constraints.<br><br>
+                    <strong>ACM §4.2 (Team Support):</strong> By not abandoning the team in chaos, you demonstrated ethical leadership.<br><br>
+                    <strong>✅ Verdict:</strong> Ethical balance achieved. Practical application of 'good enough' without violating standards.
+                </div>
+            `
         },
         end_qqs: {
             emoji: "🎯",
@@ -219,7 +249,15 @@
             lesson: "📌 Lesson: Principles without flexibility lead nowhere.",
             acmLink: "https://dl.acm.org/doi/10.1145/3540250.3549064",
             acmText: "ACM: Engineering Trade-offs →",
-            mainAudioFile: "quality-quality-speed.mp3"
+            ethicsAnalysis: `
+                <div class="ethics-analysis">
+                    <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
+                    <strong>ACM §1.4 (Fairness):</strong> Recognizing when commitment to quality becomes excessive shows ethical maturity.<br><br>
+                    <strong>ACM §2.2 (Professional Growth):</strong> Acknowledging over-optimization is a form of continuous improvement.<br><br>
+                    <strong>ACM §3.3 (Honest Self-Assessment):</strong> You were honest about misjudging the balance.<br><br>
+                    <strong>✅ Verdict:</strong> Ethically sound. Recalibrating principles based on context is wisdom, not weakness.
+                </div>
+            `
         },
         end_qqq: {
             emoji: "🏆",
@@ -229,7 +267,15 @@
             lesson: "📌 Lesson: Code quality is a marathon. Victory isn't always visible right away.",
             acmLink: "https://dl.acm.org/doi/10.1145/3540250.3549099",
             acmText: "ACM: Engineering Culture →",
-            mainAudioFile: "quality-quality-quality.mp3"
+            ethicsAnalysis: `
+                <div class="ethics-analysis">
+                    <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
+                    <strong>ACM §2.1 (Public Good):</strong> By prioritizing maintainable code, you served the broader engineering community.<br><br>
+                    <strong>ACM §1.1 (Contribute to Society):</strong> Sharing your approach at meetups fulfills ACM's highest principle.<br><br>
+                    <strong>ACM §3.1 (High Standards):</strong> You maintained professional standards even when it cost you victory.<br><br>
+                    <strong>✅ Verdict:</strong> Ethical excellence. The long game—building reputation through quality and education—is the most sustainable path.
+                </div>
+            `
         }
     };
 
@@ -244,6 +290,7 @@
                 <p style="color:#94a3b8; margin: 0.5rem 0 1rem;">Make 3 decisions — discover your project's fate at the hackathon</p>
                 <div style="background: rgba(0,0,0,0.3); border-radius: 24px; padding: 1.5rem; margin: 1rem 0;">
                     <p style="color:#cbd5e1; line-height:1.6;">🚀 <strong>Situation:</strong> You're a team lead at a hackathon. Deadlines, judges, competitors... Every choice changes your team's fate. Find your balance between perfect code and delivering the project on time.</p>
+                    <p style="color:#60a5fa; margin-top: 1rem; font-size: 0.9rem;">⚖️ Each ending includes an ethics analysis based on the <strong>ACM Code of Ethics</strong>.</p>
                 </div>
                 <button class="start-button" id="startBtn">🧠 Start Hackathon</button>
             </div>
@@ -272,6 +319,7 @@
                     <div style="background: rgba(0,0,0,0.3); border-radius: 20px; padding: 1rem; margin: 1rem 0;">
                         <strong style="color: #fbbf24;">${ending.lesson}</strong>
                     </div>
+                    ${ending.ethicsAnalysis}
                     <div class="acm-links">
                         <strong>📚 Related Research:</strong><br>
                         <div>📄 <a href="${ending.acmLink}" target="_blank">${ending.acmText}</a></div>
@@ -306,11 +354,9 @@
                 <div class="scenario-icon">${scenario.icon}</div>
                 <div class="scenario-title">${scenario.title}</div>
                 <div class="scenario-desc">${scenario.description}</div>
-                <div class="context-bubble" id="contextBubble">
-                    <span style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
-                        <span>📌 ${scenario.context}</span>
-                        <button class="context-speaker-btn" id="contextSpeakerBtn" title="Озвучить реплику персонажа">🔊</button>
-                    </span>
+                <div class="context-bubble">
+                    <div class="context-text">📌 ${scenario.context}</div>
+                    <button class="context-speaker-btn" id="contextSpeakerBtn" title="Озвучить реплику">🔊</button>
                 </div>
                 <div class="question">❓ ${scenario.question}</div>
             </div>
@@ -322,10 +368,10 @@
         currentSpeakText = `${scenario.title}. ${scenario.description} ${scenario.context} ${scenario.question}`;
         
         const contextSpeakerBtn = document.getElementById("contextSpeakerBtn");
-        if (contextSpeakerBtn && scenario.contextAudioFile) {
+        if (contextSpeakerBtn) {
             contextSpeakerBtn.addEventListener("click", (e) => {
                 e.stopPropagation();
-                playAudioFile(scenario.contextAudioFile);
+                speakContextOnly(scenario.context);
             });
         }
         
@@ -349,31 +395,8 @@
     function init() {
         const root = document.getElementById("appRoot");
         renderStartScreen(root);
-        
         document.getElementById("speakerBtn")?.addEventListener("click", () => {
-            if (!gameState.started) {
-                playAudioFile("greeting.mp3");
-                return;
-            }
-            
-            const currentStep = gameState.step;
-            
-            if (currentStep && currentStep.startsWith("end_")) {
-                const ending = endings[currentStep];
-                if (ending && ending.mainAudioFile) {
-                    playAudioFile(ending.mainAudioFile);
-                } else if (currentSpeakText) {
-                    speakText(currentSpeakText);
-                }
-                return;
-            }
-            
-            const scenario = scenarios[currentStep];
-            if (scenario && scenario.mainAudioFile) {
-                playAudioFile(scenario.mainAudioFile);
-            } else if (currentSpeakText) {
-                speakText(currentSpeakText);
-            }
+            if (currentSpeakText) speakText(currentSpeakText);
         });
     }
     init();

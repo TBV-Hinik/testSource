@@ -15,7 +15,6 @@ body {
     position: relative;
 }
 
-/* Анимированный фон */
 body::before {
     content: "";
     position: fixed;
@@ -34,7 +33,6 @@ body::before {
     z-index: 2;
 }
 
-/* Карточка с неоновым свечением */
 .game-card {
     background: rgba(15, 23, 42, 0.85);
     backdrop-filter: blur(16px);
@@ -45,7 +43,6 @@ body::before {
     transition: all 0.3s;
 }
 
-/* Шапка ACM */
 .acm-header {
     display: flex;
     justify-content: space-between;
@@ -85,7 +82,6 @@ h1 {
     margin-bottom: 0.5rem;
 }
 
-/* Стили для сценария */
 .scenario-card {
     background: rgba(30, 41, 59, 0.7);
     border-radius: 32px;
@@ -120,29 +116,30 @@ h1 {
     padding: 1rem 1.25rem;
     margin: 1rem 0;
     border-left: 3px solid #3b82f6;
-    color: #94a3b8;
-}
-
-/* Стиль для контейнера с репликой и кнопкой */
-.context-content {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
+    gap: 15px;
+    flex-wrap: nowrap;
 }
 
-/* Кнопка озвучивания реплики */
+.context-text {
+    color: #94a3b8;
+    line-height: 1.5;
+    flex: 1;
+    word-break: break-word;
+}
+
 .context-speaker-btn {
     background: rgba(249, 115, 22, 0.15);
     border: 1px solid #f59e0b;
     border-radius: 50%;
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     cursor: pointer;
     font-size: 14px;
     transition: all 0.2s ease;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     color: #f59e0b;
@@ -165,7 +162,6 @@ h1 {
     border-top: 1px dashed #334155;
 }
 
-/* Кнопки выбора */
 .choices {
     display: flex;
     gap: 1.25rem;
@@ -211,7 +207,6 @@ h1 {
     box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
 }
 
-/* История выбора */
 .history-path {
     background: rgba(0, 0, 0, 0.3);
     border-radius: 40px;
@@ -230,7 +225,6 @@ h1 {
     padding: 4px 12px;
 }
 
-/* Результат */
 .result-area {
     background: linear-gradient(135deg, #1e293b, #0f172a);
     border-radius: 32px;
@@ -249,6 +243,21 @@ h1 {
     color: #cbd5e1;
     line-height: 1.6;
     margin-bottom: 1.5rem;
+}
+
+.ethics-analysis {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 20px;
+    padding: 1.2rem;
+    margin: 1rem 0;
+    border-left: 4px solid #60a5fa;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #cbd5e1;
+}
+
+.ethics-analysis strong {
+    color: #60a5fa;
 }
 
 .acm-links {
@@ -314,7 +323,6 @@ h1 {
     line-height: 1.6;
 }
 
-/* Основная кнопка озвучивания (правая нижняя) */
 .speaker-icon {
     position: fixed;
     bottom: 30px;
@@ -375,9 +383,16 @@ footer {
         bottom: 20px;
         right: 20px;
     }
+    .context-bubble {
+        flex-wrap: wrap;
+    }
     .context-speaker-btn {
-        width: 28px;
-        height: 28px;
+        width: 32px;
+        height: 32px;
         font-size: 12px;
+    }
+    .ethics-analysis {
+        font-size: 0.8rem;
+        padding: 1rem;
     }
 }
