@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Dilemma: Quality vs Speed | Hackathon</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="game-container">
+    <div class="game-card">
+        <div id="appRoot"></div>
+    </div>
+    <footer>🏆 Hackathon • Quality vs Speed • Your Choice Shapes Your Destiny</footer>
+</div>
+
+<div class="speaker-icon" id="speakerBtn" title="Озвучить текст">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+    </svg>
+</div>
+
+<script>
+    let gameState = {
+        started: false,
+        step: 1,
+        history: []
+    };
+
+    let currentSpeakText = "";
+
+    function speakText(text) {
+        if (!text) return;
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ru-RU';
+        utterance.rate = 0.92;
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // ========== СЦЕНАРИИ (правильная структура) ==========
+    const scenarios = {
+        // Раунд 1
+        round1: {
+            icon: "⚡",
+            title: "Deadline in 2 hours",
+            description: "Your team is participating in a hackathon. You have 2 hours left until project submission, and the key feature still isn't working. The manager writes in the chat: «It's better to deliver something that works than something perfect but empty».",
+            context: "💬 Team Lead: «We have a quick-and-dirty workaround that'll last about 30 minutes. Either we do it properly—but then we risk not finishing at all».",
+            question: "What will you do?",
+            choices: [
+                { text: "⚡ Quick fix. The main thing is to deliver", type: "speed", nextId: "round2_s" },
+                { text: "🔵 Do it properly or not at all", type: "quality", nextId: "round2_q" }
+            ]
+        },
+        // Раунд 2 — после speed
+        round2_s: {
+            icon: "🔥",
+            title: "The quick fix worked. Almost.",
+            description: "You submitted the project on time. The judges ran the demo — everything works. But the code contains hardcoded data and completely lacks error handling. One of the judges, a technical specialist, asks to see the source code.",
+            context: "💬 Teammate: «If he digs into the code, we'll get laughed at. But if we don't show it, that looks suspicious».",
+            question: "What will you tell the judge?",
+            choices: [
+                { text: "⚡ Let's show it. It's an MVP, and we're honest about our technical debt", type: "speed", nextId: "round3_ss" },
+                { text: "🔵 We'll distract them with the demo and won't show the code", type: "quality", nextId: "round3_sq" }
+            ]
+        },
+        // Раунд 2 — после quality
+        round2_q: {
+            icon: "🧱",
+            title: "Didn't make it. But the code is fire.",
+            description: "You built a clean architecture, wrote tests, and documented the API. But you only managed to implement 40% of the features. The project formally doesn't meet the hackathon requirements.",
+            context: "💬 Organizer: «Technically impressive, but you don't meet the criteria. We can give you another 30 minutes—but you'll have to cut corners».",
+            question: "Will you take the extra time?",
+            choices: [
+                { text: "⚡ Yes, let's add at least something working in 30 minutes", type: "speed", nextId: "round3_qs" },
+                { text: "🔵 No. Let them judge us on what we have", type: "quality", nextId: "round3_qq" }
+            ]
+        },
+        // Раунд 3 — speed → speed
+        round3_ss: {
+            icon: "📈",
+            title: "Honesty appreciated",
+            description: "The judge praised your transparency. Your team took 3rd place. A startup investor offers you a small grant—on the condition that you polish the product to a working state within a week.",
+            context: "💬 Investor: «Time-to-market is what matters to me. Refactoring can wait. Are you ready to ship fast?»",
+            question: "Will you take the grant under these terms?",
+            choices: [
+                { text: "⚡ We'll take it. Speed is our strength", type: "speed", nextId: "end_sss" },
+                { text: "🔵 We'll take it, but we insist on refactoring first", type: "quality", nextId: "end_ssq" }
+            ]
+        },
+        // Раунд 3 — speed → quality
+        round3_sq: {
+            icon: "🕵️",
+            title: "Code hidden—but it leaked",
+            description: "One of the participants photographed the screen. A screenshot with a hardcoded password to the test database ended up in the hackathon chat. A small scandal, but an unpleasant one.",
+            context: "💬 Organizer: «We won't disqualify you, but we expect a public explanation of what happened».",
+            question: "How do you respond?",
+            choices: [
+                { text: "⚡ We publicly admit the mistake and move on", type: "speed", nextId: "end_sqs" },
+                { text: "🔵 We explain technically: it's test data, no threat", type: "quality", nextId: "end_sqq" }
+            ]
+        },
+        // Раунд 3 — quality → speed
+        round3_qs: {
+            icon: "⏱️",
+            title: "30 minutes. Total chaos.",
+            description: "In half an hour, you slapped together three more features—no tests, no validation. One of them crashes right during the demo in front of the judges. The judges exchange glances.",
+            context: "💬 Team Lead whispers: «We could blame it on an unstable network. Or we could come clean».",
+            question: "What do you tell the judges?",
+            choices: [
+                { text: "⚡ We blame the network and move on", type: "speed", nextId: "end_qss" },
+                { text: "🔵 We explain honestly: the feature is rough, we added it at the last minute", type: "quality", nextId: "end_qsq" }
+            ]
+        },
+        // Раунд 3 — quality → quality
+        round3_qq: {
+            icon: "🏛️",
+            title: "Judged by code",
+            description: "The judges decide to evaluate not just the demo, but the code quality as well. Your project is one of two to advance to the finals based on this criterion. The competitor submitted a complete product, but with a mountain of technical debt.",
+            context: "💬 Technical Judge: «Your architecture is the best at this hackathon. But there's barely a product. Tell us how this happened».",
+            question: "How do you explain your choice?",
+            choices: [
+                { text: "⚡ «We overestimated our capabilities—we'll find a balance next time»", type: "speed", nextId: "end_qqs" },
+                { text: "🔵 «We consciously prioritized quality. Scaling bad code is worse than polishing good code»", type: "quality", nextId: "end_qqq" }
+            ]
+        }
+    };
+
+    // ========== 8 УНИКАЛЬНЫХ КОНЦОВОК ==========
+    const endings = {
+        end_sss: {
+            emoji: "💀",
+            title: "Collapse at speed",
+            color: "#ef4444",
+            description: "Grant received, product shipped in a week. Within the first hour after release, the service crashed under load—the makeshift architecture couldn't handle it. The investor demands their money back. The team panics, writing hotfixes 24/7. Technical debt is so massive that rewriting from scratch is easier. You've lost trust and your team.",
+            lesson: "📌 Lesson: Speed at any cost kills products. Debt accumulates exponentially.",
+            acmLink: "https://dl.acm.org/doi/10.1145/3540250.3549088",
+            acmText: "ACM: Technical Debt in Startups →"
+        },
+        end_ssq: {
+            emoji: "🔄",
+            title: "Late refactoring",
+            color: "#f59e0b",
+            description: "You insisted on refactoring. The investor is unhappy about the delay but agrees to give two more weeks. The team rewrites key modules. The release launches a month behind competitors—but it's stable. Customers value reliability, but market share is already lost. You saved the product from death, but not from mediocre results.",
+            lesson: "📌 Lesson: Refactoring is possible, but better not to push it to the breaking point.",
+            acmLink: "https://dl.acm.org/doi/10.1145/3368089.3409742",
+            acmText: "ACM: When Refactoring Can't Save You →"
+        },
+        end_sqs: {
+            emoji: "🎭",
+            title: "False ending",
+            color: "#a855f7",
+            description: "You blamed the demo crash on the network. The judges didn't believe you—one of them turned out to be a network engineer. The team was disqualified for dishonesty. Word spread through the IT community. You're no longer invited to hackathons. Your next two projects failed due to lack of trust.",
+            lesson: "📌 Lesson: Lies in the IT community destroy reputations faster than any bug.",
+            acmLink: "https://dl.acm.org/doi/10.1145/3183399",
+            acmText: "ACM: Ethics and Trust in Development →"
+        },
+        end_sqq: {
+            emoji: "🌱",
+            title: "Honest failure",
+            color: "#10b981",
+            description: "You admitted the mistake during the demo. The judges appreciated your honesty and awarded a special prize «For Best Reflection». The organizer invited you to a mentorship program. Six months later, you're leading a workshop: «How to Admit Mistakes Without Burning Out». Your career took off—thanks to soft skills, not hard skills.",
+            lesson: "📌 Lesson: Honesty under pressure is a rare and valuable skill.",
+            acmLink: "https://dl.acm.org/doi/10.1145/3377811.3380370",
+            acmText: "ACM: Reflection in Teams →"
+        },
+        end_qss: {
+            emoji: "💔",
+            title: "A ruined masterpiece",
+            color: "#f97316",
+            description: "Initially clean code turned into spaghetti after three rushed features. Architecture broken, tests failing. The demo flopped. The best code at the hackathon is now the biggest disappointment. You blame yourself for panicking at the last moment. The team is disillusioned.",
+            lesson: "📌 Lesson: Quality can be destroyed in half an hour. Don't change strategy at the last minute.",
+            acmLink: "https://dl.acm.org/doi/10.1145/3540250.3549093",
+            acmText: "ACM: Managing Quality Under Pressure →"
+        },
+        end_qsq: {
+            emoji: "⚖️",
+            title: "The sweet spot",
+            color: "#06b6d4",
+            description: "You found the balance. The product didn't win, but received a special award «For Architectural Excellence». A CTO from a major company noticed you. A month later, you received a promotion offer. The team is grateful you didn't abandon them in the chaos.",
+            lesson: "📌 Lesson: Balancing speed and quality is an art—and it pays off.",
+            acmLink: "https://dl.acm.org/doi/10.1145/3368089.3409701",
+            acmText: "ACM: Finding Balance in Teams →"
+        },
+        end_qqs: {
+            emoji: "🎯",
+            title: "The Pragmatist",
+            color: "#8b5cf6",
+            description: "You held the quality line for a long time, but admitted in the finale that you overdid it. The judges remembered you as a strong engineer who knows how to admit mistakes. You landed an internship at your dream company. Key lesson: being principled is good, but flexibility matters more.",
+            lesson: "📌 Lesson: Principles without flexibility lead nowhere.",
+            acmLink: "https://dl.acm.org/doi/10.1145/3540250.3549064",
+            acmText: "ACM: Engineering Trade-offs →"
+        },
+        end_qqq: {
+            emoji: "🏆",
+            title: "Knight of Quality",
+            color: "#10b981",
+            description: "You didn't give up. The project didn't win the hackathon—but it became legendary. Your code is dissected at meetups; you're invited to speak on «How to Write Maintainable Code in Deadline Hell». You were hired by a company that values engineering culture over speed. You won the long game.",
+            lesson: "📌 Lesson: Code quality is a marathon. Victory isn't always visible right away.",
+            acmLink: "https://dl.acm.org/doi/10.1145/3540250.3549099",
+            acmText: "ACM: Engineering Culture →"
+        }
+    };
+
+    function renderStartScreen(container) {
+        container.innerHTML = `
+            <div class="greeting">
+                <div class="acm-header">
+                    <div class="acm-badge">🏆 HACKATHON</div>
+                    <div class="round-indicator">Quality vs Speed</div>
+                </div>
+                <h1>Quality <span style="color:#f59e0b">vs</span> Speed</h1>
+                <p style="color:#94a3b8; margin: 0.5rem 0 1rem;">Make 3 decisions — discover your project's fate at the hackathon</p>
+                <div style="background: rgba(0,0,0,0.3); border-radius: 24px; padding: 1.5rem; margin: 1rem 0;">
+                    <p style="color:#cbd5e1; line-height:1.6;">🚀 <strong>Situation:</strong> You're a team lead at a hackathon. Deadlines, judges, competitors... Every choice changes your team's fate. Find your balance between perfect code and delivering the project on time.</p>
+                </div>
+                <button class="start-button" id="startBtn">🧠 Start Hackathon</button>
+            </div>
+        `;
+        currentSpeakText = "Welcome to the hackathon. You're a team lead. Find the balance between code quality and delivery speed. Press Start to begin.";
+        document.getElementById("startBtn")?.addEventListener("click", () => {
+            gameState = { started: true, step: "round1", history: [] };
+            renderGameScreen(container);
+        });
+    }
+
+    function renderGameScreen(container) {
+        const currentStep = gameState.step;
+        
+        // Проверка, не конец ли это
+        if (currentStep && currentStep.startsWith("end_")) {
+            const ending = endings[currentStep];
+            const pathStr = gameState.history.map(h => h === 'speed' ? '⚡' : '🐢').join(' → ');
+            container.innerHTML = `
+                <div class="acm-header">
+                    <div class="acm-badge">📖 ИТОГ ХАКАТОНА</div>
+                    <div class="round-indicator">${pathStr}</div>
+                </div>
+                <div class="result-area">
+                    <div class="result-title" style="color: ${ending.color};">${ending.emoji} ${ending.title}</div>
+                    <div class="result-description">${ending.description}</div>
+                    <div style="background: rgba(0,0,0,0.3); border-radius: 20px; padding: 1rem; margin: 1rem 0;">
+                        <strong style="color: #fbbf24;">${ending.lesson}</strong>
+                    </div>
+                    <div class="acm-links">
+                        <strong>📚 Связанное исследование:</strong><br>
+                        <div>📄 <a href="${ending.acmLink}" target="_blank">${ending.acmText}</a></div>
+                    </div>
+                </div>
+                <button class="reset-button" id="resetGameBtn">⟳ Play Again</button>
+            `;
+            currentSpeakText = ending.title + ". " + ending.description;
+            document.getElementById("resetGameBtn")?.addEventListener("click", () => {
+                gameState = { started: false, step: "round1", history: [] };
+                renderStartScreen(container);
+            });
+            return;
+        }
+        
+        const scenario = scenarios[currentStep];
+        if (!scenario) return;
+        
+        const historyDisplay = gameState.history.length > 0 
+            ? `<div class="history-path">📋 Path taken: ${gameState.history.map(h => h === 'speed' ? '<span class="history-step">⚡ speed</span>' : '<span class="history-step">🐢 quality</span>').join(' → ')}</div>`
+            : '';
+        
+        const roundNum = gameState.step === "round1" ? 1 : (gameState.step.startsWith("round2") ? 2 : 3);
+        
+        container.innerHTML = `
+            <div class="acm-header">
+                <div class="acm-badge">🧩 ROUND ${roundNum} / 3</div>
+                <div class="round-indicator">Your choice shapes your destiny</div>
+            </div>
+            ${historyDisplay}
+            <div class="scenario-card">
+                <div class="scenario-icon">${scenario.icon}</div>
+                <div class="scenario-title">${scenario.title}</div>
+                <div class="scenario-desc">${scenario.description}</div>
+                <div class="context-bubble">📌 ${scenario.context}</div>
+                <div class="question">❓ ${scenario.question}</div>
+            </div>
+            <div class="choices">
+                <button class="choice-btn speed-choice" id="choiceSpeed">${scenario.choices[0].text}</button>
+                <button class="choice-btn quality-choice" id="choiceQuality">${scenario.choices[1].text}</button>
+            </div>
+        `;
+        currentSpeakText = `${scenario.title}. ${scenario.description} ${scenario.context} ${scenario.question}`;
+        
+        document.getElementById("choiceSpeed")?.addEventListener("click", () => {
+            window.speechSynthesis.cancel();
+            const choice = scenario.choices[0];
+            gameState.history.push(choice.type);
+            gameState.step = choice.nextId;
+            renderGameScreen(container);
+        });
+        
+        document.getElementById("choiceQuality")?.addEventListener("click", () => {
+            window.speechSynthesis.cancel();
+            const choice = scenario.choices[1];
+            gameState.history.push(choice.type);
+            gameState.step = choice.nextId;
+            renderGameScreen(container);
+        });
+    }
+
+    function init() {
+        const root = document.getElementById("appRoot");
+        renderStartScreen(root);
+        document.getElementById("speakerBtn")?.addEventListener("click", () => {
+            if (currentSpeakText) speakText(currentSpeakText);
+        });
+    }
+    init();
+</script>
+</body>
+</html>
