@@ -14,7 +14,8 @@
     <footer>🏆 Hackathon • Quality vs Speed • Your Choice Shapes Your Destiny</footer>
 </div>
 
-<div class="speaker-icon" id="speakerBtn" title="Озвучить текст">
+<!-- Основная кнопка озвучивания -->
+<div class="speaker-icon" id="speakerBtn" title="Озвучить основной текст">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
     </svg>
@@ -38,9 +39,20 @@
         window.speechSynthesis.speak(utterance);
     }
 
-    // ========== СЦЕНАРИИ (правильная структура) ==========
+    // Функция для озвучивания только реплики (контекста)
+    function speakContextOnly(contextText) {
+        if (!contextText) return;
+        window.speechSynthesis.cancel();
+        // Убираем эмодзи и значок 💬 из начала для чистого звучания
+        let cleanText = contextText.replace(/^[💬📌]\s*/, '');
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        utterance.lang = 'ru-RU';
+        utterance.rate = 0.92;
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // ========== СЦЕНАРИИ ==========
     const scenarios = {
-        // Раунд 1
         round1: {
             icon: "⚡",
             title: "Deadline in 2 hours",
@@ -52,7 +64,6 @@
                 { text: "🔵 Do it properly or not at all", type: "quality", nextId: "round2_q" }
             ]
         },
-        // Раунд 2 — после speed
         round2_s: {
             icon: "🔥",
             title: "The quick fix worked. Almost.",
@@ -64,7 +75,6 @@
                 { text: "🔵 We'll distract them with the demo and won't show the code", type: "quality", nextId: "round3_sq" }
             ]
         },
-        // Раунд 2 — после quality
         round2_q: {
             icon: "🧱",
             title: "Didn't make it. But the code is fire.",
@@ -76,7 +86,6 @@
                 { text: "🔵 No. Let them judge us on what we have", type: "quality", nextId: "round3_qq" }
             ]
         },
-        // Раунд 3 — speed → speed
         round3_ss: {
             icon: "📈",
             title: "Honesty appreciated",
@@ -88,7 +97,6 @@
                 { text: "🔵 We'll take it, but we insist on refactoring first", type: "quality", nextId: "end_ssq" }
             ]
         },
-        // Раунд 3 — speed → quality
         round3_sq: {
             icon: "🕵️",
             title: "Code hidden—but it leaked",
@@ -100,7 +108,6 @@
                 { text: "🔵 We explain technically: it's test data, no threat", type: "quality", nextId: "end_sqq" }
             ]
         },
-        // Раунд 3 — quality → speed
         round3_qs: {
             icon: "⏱️",
             title: "30 minutes. Total chaos.",
@@ -112,7 +119,6 @@
                 { text: "🔵 We explain honestly: the feature is rough, we added it at the last minute", type: "quality", nextId: "end_qsq" }
             ]
         },
-        // Раунд 3 — quality → quality
         round3_qq: {
             icon: "🏛️",
             title: "Judged by code",
@@ -126,7 +132,7 @@
         }
     };
 
-    // ========== 8 УНИКАЛЬНЫХ КОНЦОВОК ==========
+    // ========== 8 КОНЦОВОК ==========
     const endings = {
         end_sss: {
             emoji: "💀",
@@ -227,13 +233,12 @@
     function renderGameScreen(container) {
         const currentStep = gameState.step;
         
-        // Проверка, не конец ли это
         if (currentStep && currentStep.startsWith("end_")) {
             const ending = endings[currentStep];
             const pathStr = gameState.history.map(h => h === 'speed' ? '⚡' : '🐢').join(' → ');
             container.innerHTML = `
                 <div class="acm-header">
-                    <div class="acm-badge">📖 ИТОГ ХАКАТОНА</div>
+                    <div class="acm-badge">📖 HACKATHON RESULT</div>
                     <div class="round-indicator">${pathStr}</div>
                 </div>
                 <div class="result-area">
@@ -243,7 +248,7 @@
                         <strong style="color: #fbbf24;">${ending.lesson}</strong>
                     </div>
                     <div class="acm-links">
-                        <strong>📚 Связанное исследование:</strong><br>
+                        <strong>📚 Related Research:</strong><br>
                         <div>📄 <a href="${ending.acmLink}" target="_blank">${ending.acmText}</a></div>
                     </div>
                 </div>
@@ -276,7 +281,12 @@
                 <div class="scenario-icon">${scenario.icon}</div>
                 <div class="scenario-title">${scenario.title}</div>
                 <div class="scenario-desc">${scenario.description}</div>
-                <div class="context-bubble">📌 ${scenario.context}</div>
+                <div class="context-bubble" id="contextBubble">
+                    <span style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                        <span>📌 ${scenario.context}</span>
+                        <button class="context-speaker-btn" id="contextSpeakerBtn" title="Озвучить только эту реплику">🔊</button>
+                    </span>
+                </div>
                 <div class="question">❓ ${scenario.question}</div>
             </div>
             <div class="choices">
@@ -285,6 +295,15 @@
             </div>
         `;
         currentSpeakText = `${scenario.title}. ${scenario.description} ${scenario.context} ${scenario.question}`;
+        
+        // Добавляем обработчик для кнопки озвучивания реплики
+        const contextSpeakerBtn = document.getElementById("contextSpeakerBtn");
+        if (contextSpeakerBtn) {
+            contextSpeakerBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                speakContextOnly(scenario.context);
+            });
+        }
         
         document.getElementById("choiceSpeed")?.addEventListener("click", () => {
             window.speechSynthesis.cancel();

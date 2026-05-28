@@ -123,6 +123,39 @@ h1 {
     color: #94a3b8;
 }
 
+/* Стиль для контейнера с репликой и кнопкой */
+.context-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* Кнопка озвучивания реплики */
+.context-speaker-btn {
+    background: rgba(249, 115, 22, 0.15);
+    border: 1px solid #f59e0b;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #f59e0b;
+    background-color: #1e293b;
+    flex-shrink: 0;
+}
+
+.context-speaker-btn:hover {
+    background: #f59e0b;
+    color: #1e293b;
+    transform: scale(1.05);
+}
+
 .question {
     font-size: 1.3rem;
     font-weight: 600;
@@ -281,6 +314,7 @@ h1 {
     line-height: 1.6;
 }
 
+/* Основная кнопка озвучивания (правая нижняя) */
 .speaker-icon {
     position: fixed;
     bottom: 30px;
@@ -340,5 +374,10 @@ footer {
         height: 44px;
         bottom: 20px;
         right: 20px;
+    }
+    .context-speaker-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
     }
 }
