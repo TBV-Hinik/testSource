@@ -45,7 +45,6 @@
     }
     // ============================================
 
-    // TTS на всякий случай (если файла нет)
     function speakText(text) {
         if (!text) return;
         window.speechSynthesis.cancel();
@@ -102,7 +101,7 @@
             description: "The judge praised your transparency. Your team took 3rd place. A startup investor offers you a small grant—on the condition that you polish the product to a working state within a week.",
             context: "💬 Investor: «Time-to-market is what matters to me. Refactoring can wait. Are you ready to ship fast?»",
             question: "Will you take the grant under these terms?",
-            mainAudioFile: "round3_ss.mp3",
+            mainAudioFile: "speed-speed.mp3",
             contextAudioFile: "speed-speed-investor.mp3",
             choices: [
                 { text: "⚡ We'll take it. Speed is our strength", type: "speed", nextId: "end_sss" },
@@ -115,7 +114,7 @@
             description: "One of the participants photographed the screen. A screenshot with a hardcoded password to the test database ended up in the hackathon chat. A small scandal, but an unpleasant one.",
             context: "💬 Organizer: «We won't disqualify you, but we expect a public explanation of what happened».",
             question: "How do you respond?",
-            mainAudioFile: "round3_sq.mp3",
+            mainAudioFile: "speed-quality.mp3",
             contextAudioFile: "speed-quality-organizer.mp3",
             choices: [
                 { text: "⚡ We publicly admit the mistake and move on", type: "speed", nextId: "end_sqs" },
@@ -128,7 +127,7 @@
             description: "In half an hour, you slapped together three more features—no tests, no validation. One of them crashes right during the demo in front of the judges. The judges exchange glances.",
             context: "💬 Team Lead whispers: «We could blame it on an unstable network. Or we could come clean».",
             question: "What do you tell the judges?",
-            mainAudioFile: "round3_qs.mp3",
+            mainAudioFile: "quality-speed.mp3",
             contextAudioFile: "quality-speed-team-lead.mp3",
             choices: [
                 { text: "⚡ We blame the network and move on", type: "speed", nextId: "end_qss" },
@@ -141,7 +140,7 @@
             description: "The judges decide to evaluate not just the demo, but the code quality as well. Your project is one of two to advance to the finals based on this criterion. The competitor submitted a complete product, but with a mountain of technical debt.",
             context: "💬 Technical Judge: «Your architecture is the best at this hackathon. But there's barely a product. Tell us how this happened».",
             question: "How do you explain your choice?",
-            mainAudioFile: "round3_qq.mp3",
+            mainAudioFile: "quality-quality.mp3",
             contextAudioFile: "quality-quality-judge.mp3",
             choices: [
                 { text: "⚡ «We overestimated our capabilities—we'll find a balance next time»", type: "speed", nextId: "end_qqs" },
@@ -322,7 +321,6 @@
         `;
         currentSpeakText = `${scenario.title}. ${scenario.description} ${scenario.context} ${scenario.question}`;
         
-        // Маленький динамик — озвучивает реплику персонажа (contextAudioFile)
         const contextSpeakerBtn = document.getElementById("contextSpeakerBtn");
         if (contextSpeakerBtn && scenario.contextAudioFile) {
             contextSpeakerBtn.addEventListener("click", (e) => {
@@ -352,9 +350,7 @@
         const root = document.getElementById("appRoot");
         renderStartScreen(root);
         
-        // Большой динамик (справа снизу) — озвучивает основной текст раунда (mainAudioFile)
         document.getElementById("speakerBtn")?.addEventListener("click", () => {
-            // Если игра не начата — играем greeting.mp3
             if (!gameState.started) {
                 playAudioFile("greeting.mp3");
                 return;
@@ -362,7 +358,6 @@
             
             const currentStep = gameState.step;
             
-            // Если в концовке — играем mainAudioFile концовки
             if (currentStep && currentStep.startsWith("end_")) {
                 const ending = endings[currentStep];
                 if (ending && ending.mainAudioFile) {
@@ -373,7 +368,6 @@
                 return;
             }
             
-            // В раундах — играем mainAudioFile
             const scenario = scenarios[currentStep];
             if (scenario && scenario.mainAudioFile) {
                 playAudioFile(scenario.mainAudioFile);
