@@ -14,8 +14,8 @@
     <footer>🏆 Hackathon • Quality vs Speed • Your Choice Shapes Your Destiny</footer>
 </div>
 
-<!-- Основная кнопка озвучивания -->
-<div class="speaker-icon" id="speakerBtn" title="Озвучить основной текст">
+<!-- Основная кнопка озвучивания (справа снизу) - для основного текста раунда -->
+<div class="speaker-icon" id="speakerBtn" title="Озвучить основной текст раунда">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
     </svg>
@@ -45,22 +45,12 @@
     }
     // ============================================
 
+    // TTS на всякий случай (если файла нет)
     function speakText(text) {
         if (!text) return;
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'ru-RU';
-        utterance.rate = 0.92;
-        window.speechSynthesis.speak(utterance);
-    }
-
-    // Функция для озвучивания только реплики (контекста)
-    function speakContextOnly(contextText) {
-        if (!contextText) return;
-        window.speechSynthesis.cancel();
-        let cleanText = contextText.replace(/^[💬📌]\s*/, '');
-        const utterance = new SpeechSynthesisUtterance(cleanText);
-        utterance.lang = 'ru-RU';
+        utterance.lang = 'en-US';
         utterance.rate = 0.92;
         window.speechSynthesis.speak(utterance);
     }
@@ -73,7 +63,8 @@
             description: "Your team is participating in a hackathon. You have 2 hours left until project submission, and the key feature still isn't working. The manager writes in the chat: «It's better to deliver something that works than something perfect but empty».",
             context: "💬 Team Lead: «We have a quick-and-dirty workaround that'll last about 30 minutes. Either we do it properly—but then we risk not finishing at all».",
             question: "What will you do?",
-            audioFile: "round1-team-lead.mp3",
+            mainAudioFile: "round1.mp3",
+            contextAudioFile: "round1-team-lead.mp3",
             choices: [
                 { text: "⚡ Quick fix. The main thing is to deliver", type: "speed", nextId: "round2_s" },
                 { text: "🔵 Do it properly or not at all", type: "quality", nextId: "round2_q" }
@@ -85,7 +76,8 @@
             description: "You submitted the project on time. The judges ran the demo — everything works. But the code contains hardcoded data and completely lacks error handling. One of the judges, a technical specialist, asks to see the source code.",
             context: "💬 Teammate: «If he digs into the code, we'll get laughed at. But if we don't show it, that looks suspicious».",
             question: "What will you tell the judge?",
-            audioFile: "speed-teammate.mp3",
+            mainAudioFile: "speed.mp3",
+            contextAudioFile: "speed-teammate.mp3",
             choices: [
                 { text: "⚡ Let's show it. It's an MVP, and we're honest about our technical debt", type: "speed", nextId: "round3_ss" },
                 { text: "🔵 We'll distract them with the demo and won't show the code", type: "quality", nextId: "round3_sq" }
@@ -97,7 +89,8 @@
             description: "You built a clean architecture, wrote tests, and documented the API. But you only managed to implement 40% of the features. The project formally doesn't meet the hackathon requirements.",
             context: "💬 Organizer: «Technically impressive, but you don't meet the criteria. We can give you another 30 minutes—but you'll have to cut corners».",
             question: "Will you take the extra time?",
-            audioFile: "quality-organizer.mp3",
+            mainAudioFile: "quality.mp3",
+            contextAudioFile: "quality-organizer.mp3",
             choices: [
                 { text: "⚡ Yes, let's add at least something working in 30 minutes", type: "speed", nextId: "round3_qs" },
                 { text: "🔵 No. Let them judge us on what we have", type: "quality", nextId: "round3_qq" }
@@ -109,7 +102,8 @@
             description: "The judge praised your transparency. Your team took 3rd place. A startup investor offers you a small grant—on the condition that you polish the product to a working state within a week.",
             context: "💬 Investor: «Time-to-market is what matters to me. Refactoring can wait. Are you ready to ship fast?»",
             question: "Will you take the grant under these terms?",
-            audioFile: "speed-speed-investor.mp3",
+            mainAudioFile: "round3_ss.mp3",
+            contextAudioFile: "speed-speed-investor.mp3",
             choices: [
                 { text: "⚡ We'll take it. Speed is our strength", type: "speed", nextId: "end_sss" },
                 { text: "🔵 We'll take it, but we insist on refactoring first", type: "quality", nextId: "end_ssq" }
@@ -121,7 +115,8 @@
             description: "One of the participants photographed the screen. A screenshot with a hardcoded password to the test database ended up in the hackathon chat. A small scandal, but an unpleasant one.",
             context: "💬 Organizer: «We won't disqualify you, but we expect a public explanation of what happened».",
             question: "How do you respond?",
-            audioFile: "speed-quality-organizer.mp3",
+            mainAudioFile: "round3_sq.mp3",
+            contextAudioFile: "speed-quality-organizer.mp3",
             choices: [
                 { text: "⚡ We publicly admit the mistake and move on", type: "speed", nextId: "end_sqs" },
                 { text: "🔵 We explain technically: it's test data, no threat", type: "quality", nextId: "end_sqq" }
@@ -133,7 +128,8 @@
             description: "In half an hour, you slapped together three more features—no tests, no validation. One of them crashes right during the demo in front of the judges. The judges exchange glances.",
             context: "💬 Team Lead whispers: «We could blame it on an unstable network. Or we could come clean».",
             question: "What do you tell the judges?",
-            audioFile: "quality-speed-team-lead.mp3",
+            mainAudioFile: "round3_qs.mp3",
+            contextAudioFile: "quality-speed-team-lead.mp3",
             choices: [
                 { text: "⚡ We blame the network and move on", type: "speed", nextId: "end_qss" },
                 { text: "🔵 We explain honestly: the feature is rough, we added it at the last minute", type: "quality", nextId: "end_qsq" }
@@ -145,7 +141,8 @@
             description: "The judges decide to evaluate not just the demo, but the code quality as well. Your project is one of two to advance to the finals based on this criterion. The competitor submitted a complete product, but with a mountain of technical debt.",
             context: "💬 Technical Judge: «Your architecture is the best at this hackathon. But there's barely a product. Tell us how this happened».",
             question: "How do you explain your choice?",
-            audioFile: "quality-quality-judge.mp3",
+            mainAudioFile: "round3_qq.mp3",
+            contextAudioFile: "quality-quality-judge.mp3",
             choices: [
                 { text: "⚡ «We overestimated our capabilities—we'll find a balance next time»", type: "speed", nextId: "end_qqs" },
                 { text: "🔵 «We consciously prioritized quality. Scaling bad code is worse than polishing good code»", type: "quality", nextId: "end_qqq" }
@@ -163,7 +160,7 @@
             lesson: "📌 Lesson: Speed at any cost kills products. Debt accumulates exponentially.",
             acmLink: "https://dl.acm.org/doi/10.1145/3540250.3549088",
             acmText: "ACM: Technical Debt in Startups →",
-            audioFile: "speed-speed-speed.mp3"
+            mainAudioFile: "speed-speed-speed.mp3"
         },
         end_ssq: {
             emoji: "🔄",
@@ -173,7 +170,7 @@
             lesson: "📌 Lesson: Refactoring is possible, but better not to push it to the breaking point.",
             acmLink: "https://dl.acm.org/doi/10.1145/3368089.3409742",
             acmText: "ACM: When Refactoring Can't Save You →",
-            audioFile: "speed-speed-quality.mp3"
+            mainAudioFile: "speed-speed-quality.mp3"
         },
         end_sqs: {
             emoji: "🎭",
@@ -183,7 +180,7 @@
             lesson: "📌 Lesson: Lies in the IT community destroy reputations faster than any bug.",
             acmLink: "https://dl.acm.org/doi/10.1145/3183399",
             acmText: "ACM: Ethics and Trust in Development →",
-            audioFile: "speed-quality-speed.mp3"
+            mainAudioFile: "speed-quality-speed.mp3"
         },
         end_sqq: {
             emoji: "🌱",
@@ -193,7 +190,7 @@
             lesson: "📌 Lesson: Honesty under pressure is a rare and valuable skill.",
             acmLink: "https://dl.acm.org/doi/10.1145/3377811.3380370",
             acmText: "ACM: Reflection in Teams →",
-            audioFile: "speed-quality-quality.mp3"
+            mainAudioFile: "speed-quality-quality.mp3"
         },
         end_qss: {
             emoji: "💔",
@@ -203,7 +200,7 @@
             lesson: "📌 Lesson: Quality can be destroyed in half an hour. Don't change strategy at the last minute.",
             acmLink: "https://dl.acm.org/doi/10.1145/3540250.3549093",
             acmText: "ACM: Managing Quality Under Pressure →",
-            audioFile: "quality-speed-speed.mp3"
+            mainAudioFile: "quality-speed-speed.mp3"
         },
         end_qsq: {
             emoji: "⚖️",
@@ -213,7 +210,7 @@
             lesson: "📌 Lesson: Balancing speed and quality is an art—and it pays off.",
             acmLink: "https://dl.acm.org/doi/10.1145/3368089.3409701",
             acmText: "ACM: Finding Balance in Teams →",
-            audioFile: "quality-speed-quality.mp3"
+            mainAudioFile: "quality-speed-quality.mp3"
         },
         end_qqs: {
             emoji: "🎯",
@@ -223,7 +220,7 @@
             lesson: "📌 Lesson: Principles without flexibility lead nowhere.",
             acmLink: "https://dl.acm.org/doi/10.1145/3540250.3549064",
             acmText: "ACM: Engineering Trade-offs →",
-            audioFile: "quality-quality-speed.mp3"
+            mainAudioFile: "quality-quality-speed.mp3"
         },
         end_qqq: {
             emoji: "🏆",
@@ -233,7 +230,7 @@
             lesson: "📌 Lesson: Code quality is a marathon. Victory isn't always visible right away.",
             acmLink: "https://dl.acm.org/doi/10.1145/3540250.3549099",
             acmText: "ACM: Engineering Culture →",
-            audioFile: "quality-quality-quality.mp3"
+            mainAudioFile: "quality-quality-quality.mp3"
         }
     };
 
@@ -313,7 +310,7 @@
                 <div class="context-bubble" id="contextBubble">
                     <span style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
                         <span>📌 ${scenario.context}</span>
-                        <button class="context-speaker-btn" id="contextSpeakerBtn" title="Озвучить только эту реплику">🔊</button>
+                        <button class="context-speaker-btn" id="contextSpeakerBtn" title="Озвучить реплику персонажа">🔊</button>
                     </span>
                 </div>
                 <div class="question">❓ ${scenario.question}</div>
@@ -325,11 +322,12 @@
         `;
         currentSpeakText = `${scenario.title}. ${scenario.description} ${scenario.context} ${scenario.question}`;
         
+        // Маленький динамик — озвучивает реплику персонажа (contextAudioFile)
         const contextSpeakerBtn = document.getElementById("contextSpeakerBtn");
-        if (contextSpeakerBtn) {
+        if (contextSpeakerBtn && scenario.contextAudioFile) {
             contextSpeakerBtn.addEventListener("click", (e) => {
                 e.stopPropagation();
-                speakContextOnly(scenario.context);
+                playAudioFile(scenario.contextAudioFile);
             });
         }
         
@@ -354,9 +352,8 @@
         const root = document.getElementById("appRoot");
         renderStartScreen(root);
         
+        // Большой динамик (справа снизу) — озвучивает основной текст раунда (mainAudioFile)
         document.getElementById("speakerBtn")?.addEventListener("click", () => {
-            // ===== ВОСПРОИЗВЕДЕНИЕ MP3 ПРИ НАЖАТИИ НА ДИНАМИК =====
-            
             // Если игра не начата — играем greeting.mp3
             if (!gameState.started) {
                 playAudioFile("greeting.mp3");
@@ -365,25 +362,24 @@
             
             const currentStep = gameState.step;
             
-            // Если в концовке — играем соответствующий файл
+            // Если в концовке — играем mainAudioFile концовки
             if (currentStep && currentStep.startsWith("end_")) {
                 const ending = endings[currentStep];
-                if (ending && ending.audioFile) {
-                    playAudioFile(ending.audioFile);
+                if (ending && ending.mainAudioFile) {
+                    playAudioFile(ending.mainAudioFile);
                 } else if (currentSpeakText) {
                     speakText(currentSpeakText);
                 }
                 return;
             }
             
-            // В раундах — играем scenario.audioFile
+            // В раундах — играем mainAudioFile
             const scenario = scenarios[currentStep];
-            if (scenario && scenario.audioFile) {
-                playAudioFile(scenario.audioFile);
+            if (scenario && scenario.mainAudioFile) {
+                playAudioFile(scenario.mainAudioFile);
             } else if (currentSpeakText) {
                 speakText(currentSpeakText);
             }
-            // ======================================================
         });
     }
     init();
