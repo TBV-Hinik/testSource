@@ -30,41 +30,49 @@
 
     let currentSpeakText = "";
 
-    // ===== ФУНКЦИЯ ДЛЯ ВОСПРОИЗВЕДЕНИЯ MP3 =====
-    let currentAudio = null;
+    // Функция воспроизведения MP3 из папки audio
     function playAudioFile(fileName) {
         if (!fileName) return;
+        
+        // Останавливаем текущее воспроизведение
         if (currentAudio) {
             currentAudio.pause();
             currentAudio.currentTime = 0;
         }
+        
         const audio = new Audio(`audio/${fileName}`);
         currentAudio = audio;
+        
         audio.play().catch(e => console.log('Audio play error:', e));
+        
+        audio.onended = () => {
+            currentAudio = null;
+        };
+        
         return audio;
     }
-    // ============================================
 
-    function speakText(text) {
-        if (!text) return;
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'ru-RU';
-        utterance.rate = 0.92;
-        window.speechSynthesis.speak(utterance);
+    // Функция озвучивания реплики (контекста) из MP3
+    function playContextAudio(fileName) {
+        if (!fileName) return;
+        
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+        }
+        
+        const audio = new Audio(`audio/${fileName}`);
+        currentAudio = audio;
+        audio.play().catch(e => console.log('Context audio error:', e));
+        
+        audio.onended = () => {
+            currentAudio = null;
+        };
+        
+        return audio;
     }
 
-    function speakContextOnly(contextText) {
-        if (!contextText) return;
-        window.speechSynthesis.cancel();
-        let cleanText = contextText.replace(/^[💬📌]\s*/, '');
-        const utterance = new SpeechSynthesisUtterance(cleanText);
-        utterance.lang = 'ru-RU';
-        utterance.rate = 0.92;
-        window.speechSynthesis.speak(utterance);
-    }
-
-    // ========== СЦЕНАРИИ (на английском) ==========
+    // ========== СЦЕНАРИИ (с указанием аудиофайлов) ==========
     const scenarios = {
         round1: {
             icon: "⚡",
@@ -169,7 +177,6 @@
             lesson: "📌 Lesson: Speed at any cost kills products. Debt accumulates exponentially.",
             acmLink: "https://dl.acm.org/doi/10.1145/3540250.3549088",
             acmText: "ACM: Technical Debt in Startups →",
-            mainAudioFile: "speed-speed-speed.mp3",
             ethicsAnalysis: `
                 <div class="ethics-analysis">
                     <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
@@ -189,7 +196,6 @@
             lesson: "📌 Lesson: Refactoring is possible, but better not to push it to the breaking point.",
             acmLink: "https://dl.acm.org/doi/10.1145/3368089.3409742",
             acmText: "ACM: When Refactoring Can't Save You →",
-            mainAudioFile: "speed-speed-quality.mp3",
             ethicsAnalysis: `
                 <div class="ethics-analysis">
                     <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
@@ -208,7 +214,6 @@
             lesson: "📌 Lesson: Lies in the IT community destroy reputations faster than any bug.",
             acmLink: "https://dl.acm.org/doi/10.1145/3183399",
             acmText: "ACM: Ethics and Trust in Development →",
-            mainAudioFile: "speed-quality-speed.mp3",
             ethicsAnalysis: `
                 <div class="ethics-analysis">
                     <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
@@ -227,7 +232,6 @@
             lesson: "📌 Lesson: Honesty under pressure is a rare and valuable skill.",
             acmLink: "https://dl.acm.org/doi/10.1145/3377811.3380370",
             acmText: "ACM: Reflection in Teams →",
-            mainAudioFile: "speed-quality-quality.mp3",
             ethicsAnalysis: `
                 <div class="ethics-analysis">
                     <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
@@ -246,7 +250,6 @@
             lesson: "📌 Lesson: Quality can be destroyed in half an hour. Don't change strategy at the last minute.",
             acmLink: "https://dl.acm.org/doi/10.1145/3540250.3549093",
             acmText: "ACM: Managing Quality Under Pressure →",
-            mainAudioFile: "quality-speed-speed.mp3",
             ethicsAnalysis: `
                 <div class="ethics-analysis">
                     <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
@@ -265,7 +268,6 @@
             lesson: "📌 Lesson: Balancing speed and quality is an art—and it pays off.",
             acmLink: "https://dl.acm.org/doi/10.1145/3368089.3409701",
             acmText: "ACM: Finding Balance in Teams →",
-            mainAudioFile: "quality-speed-quality.mp3",
             ethicsAnalysis: `
                 <div class="ethics-analysis">
                     <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
@@ -284,7 +286,6 @@
             lesson: "📌 Lesson: Principles without flexibility lead nowhere.",
             acmLink: "https://dl.acm.org/doi/10.1145/3540250.3549064",
             acmText: "ACM: Engineering Trade-offs →",
-            mainAudioFile: "quality-quality-speed.mp3",
             ethicsAnalysis: `
                 <div class="ethics-analysis">
                     <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
@@ -303,7 +304,6 @@
             lesson: "📌 Lesson: Code quality is a marathon. Victory isn't always visible right away.",
             acmLink: "https://dl.acm.org/doi/10.1145/3540250.3549099",
             acmText: "ACM: Engineering Culture →",
-            mainAudioFile: "quality-quality-quality.mp3",
             ethicsAnalysis: `
                 <div class="ethics-analysis">
                     <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
@@ -332,7 +332,6 @@
                 <button class="start-button" id="startBtn">🧠 Start Hackathon</button>
             </div>
         `;
-        currentSpeakText = "Welcome to the hackathon. You're a team lead. Find the balance between code quality and delivery speed. Press Start to begin.";
         document.getElementById("startBtn")?.addEventListener("click", () => {
             gameState = { started: true, step: "round1", history: [] };
             renderGameScreen(container);
@@ -364,8 +363,11 @@
                 </div>
                 <button class="reset-button" id="resetGameBtn">⟳ Play Again</button>
             `;
-            currentSpeakText = ending.title + ". " + ending.description;
             document.getElementById("resetGameBtn")?.addEventListener("click", () => {
+                if (currentAudio) {
+                    currentAudio.pause();
+                    currentAudio = null;
+                }
                 gameState = { started: false, step: "round1", history: [] };
                 renderStartScreen(container);
             });
@@ -402,18 +404,21 @@
                 <button class="choice-btn quality-choice" id="choiceQuality">${scenario.choices[1].text}</button>
             </div>
         `;
-        currentSpeakText = `${scenario.title}. ${scenario.description} ${scenario.context} ${scenario.question}`;
         
+        // Кнопка озвучивания реплики (контекста)
         const contextSpeakerBtn = document.getElementById("contextSpeakerBtn");
         if (contextSpeakerBtn && scenario.contextAudioFile) {
             contextSpeakerBtn.addEventListener("click", (e) => {
                 e.stopPropagation();
-                playAudioFile(scenario.contextAudioFile);
+                speakContextOnly(scenario.context);
             });
         }
         
         document.getElementById("choiceSpeed")?.addEventListener("click", () => {
-            window.speechSynthesis.cancel();
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio = null;
+            }
             const choice = scenario.choices[0];
             gameState.history.push(choice.type);
             gameState.step = choice.nextId;
@@ -421,7 +426,10 @@
         });
         
         document.getElementById("choiceQuality")?.addEventListener("click", () => {
-            window.speechSynthesis.cancel();
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio = null;
+            }
             const choice = scenario.choices[1];
             gameState.history.push(choice.type);
             gameState.step = choice.nextId;
@@ -432,34 +440,8 @@
     function init() {
         const root = document.getElementById("appRoot");
         renderStartScreen(root);
-        
         document.getElementById("speakerBtn")?.addEventListener("click", () => {
-            // Если игра не начата — играем greeting.mp3
-            if (!gameState.started) {
-                playAudioFile("greeting.mp3");
-                return;
-            }
-            
-            const currentStep = gameState.step;
-            
-            // Если в концовке — играем mainAudioFile концовки
-            if (currentStep && currentStep.startsWith("end_")) {
-                const ending = endings[currentStep];
-                if (ending && ending.mainAudioFile) {
-                    playAudioFile(ending.mainAudioFile);
-                } else if (currentSpeakText) {
-                    speakText(currentSpeakText);
-                }
-                return;
-            }
-            
-            // В раундах — играем mainAudioFile
-            const scenario = scenarios[currentStep];
-            if (scenario && scenario.mainAudioFile) {
-                playAudioFile(scenario.mainAudioFile);
-            } else if (currentSpeakText) {
-                speakText(currentSpeakText);
-            }
+            if (currentSpeakText) speakText(currentSpeakText);
         });
     }
     init();
