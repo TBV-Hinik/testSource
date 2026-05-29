@@ -28,7 +28,7 @@
         history: []
     };
 
-    let currentAudio = null;
+    let currentSpeakText = "";
 
     // Функция воспроизведения MP3 из папки audio
     function playAudioFile(fileName) {
@@ -177,8 +177,16 @@
             lesson: "📌 Lesson: Speed at any cost kills products. Debt accumulates exponentially.",
             acmLink: "https://dl.acm.org/doi/10.1145/3540250.3549088",
             acmText: "ACM: Technical Debt in Startups →",
-            mainAudioFile: "speed-speed-speed.mp3",
-            ethicsAnalysis: `<div class="ethics-analysis"><strong>⚖️ ACM Code of Ethics Analysis:</strong><br><br><strong>§1.2 (Avoid Harm):</strong> Prioritizing speed over stability directly harmed users—the service crashed within the first hour.<br><br><strong>§2.1 (Public Good):</strong> Team well-being was compromised by 24/7 hotfixes and burnout.<br><br><strong>§2.3 (Professional Competence):</strong> Skipping testing and refactoring violated professional thoroughness.<br><br><strong>§3.2 (Competence):</strong> The team accepted work beyond their capacity to deliver safely.<br><br><strong>🔍 Verdict:</strong> Multiple ACM principles violated. Ethical failure at every step.</div>`
+            ethicsAnalysis: `
+                <div class="ethics-analysis">
+                    <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
+                    <strong>ACM §1.2 (Avoid Harm):</strong> Prioritizing speed over stability directly harmed users—the service crashed within the first hour.<br><br>
+                    <strong>ACM §2.1 (Public Good):</strong> Team well-being was compromised by 24/7 hotfixes and burnout.<br><br>
+                    <strong>ACM §2.3 (Professional Competence):</strong> Skipping testing and refactoring violated the duty of professional thoroughness.<br><br>
+                    <strong>ACM §3.2 (Competence):</strong> The team accepted work beyond their capacity to deliver safely.<br><br>
+                    <strong>🔍 Verdict:</strong> Multiple ACM principles violated. This path represents ethical failure at every step.
+                </div>
+            `
         },
         end_ssq: {
             emoji: "🔄",
@@ -188,8 +196,15 @@
             lesson: "📌 Lesson: Refactoring is possible, but better not to push it to the breaking point.",
             acmLink: "https://dl.acm.org/doi/10.1145/3368089.3409742",
             acmText: "ACM: When Refactoring Can't Save You →",
-            mainAudioFile: "speed-speed-quality.mp3",
-            ethicsAnalysis: `<div class="ethics-analysis"><strong>⚖️ ACM Code of Ethics Analysis:</strong><br><br><strong>§2.1 (Public Good):</strong> By insisting on refactoring, you prioritized long-term reliability.<br><br><strong>§2.5 (Manage Risk):</strong> You took responsibility for technical debt.<br><br><strong>§3.3 (Transparency):</strong> You were transparent with the investor.<br><br><strong>✅ Verdict:</strong> Mixed outcome—ethically responsible, but too late.</div>`
+            ethicsAnalysis: `
+                <div class="ethics-analysis">
+                    <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
+                    <strong>ACM §2.1 (Public Good):</strong> By insisting on refactoring, you prioritized the product's long-term reliability.<br><br>
+                    <strong>ACM §2.5 (Assess and Manage Risk):</strong> You took responsibility for technical debt and allocated resources to reduce it.<br><br>
+                    <strong>ACM §3.3 (Transparent Communication):</strong> You were transparent with the investor about the need for refactoring.<br><br>
+                    <strong>✅ Verdict:</strong> Mixed outcome—ethically responsible, but too late. Address debt earlier.
+                </div>
+            `
         },
         end_sqs: {
             emoji: "🎭",
@@ -199,8 +214,15 @@
             lesson: "📌 Lesson: Lies in the IT community destroy reputations faster than any bug.",
             acmLink: "https://dl.acm.org/doi/10.1145/3183399",
             acmText: "ACM: Ethics and Trust in Development →",
-            mainAudioFile: "speed-quality-speed.mp3",
-            ethicsAnalysis: `<div class="ethics-analysis"><strong>⚖️ ACM Code of Ethics Analysis:</strong><br><br><strong>§1.3 (Honesty):</strong> Blaming the network was a direct lie.<br><br><strong>§1.6 (Privacy/Integrity):</strong> Hardcoded password leak showed disregard for security.<br><br><strong>§2.6 (Professional Reputation):</strong> Dishonesty harms trust in the profession.<br><br><strong>🔴 Verdict:</strong> Severe ethics violation.</div>`
+            ethicsAnalysis: `
+                <div class="ethics-analysis">
+                    <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
+                    <strong>ACM §1.3 (Honesty and Trustworthiness):</strong> Blaming the network was a direct lie. The ACM Code requires professionals to be honest.<br><br>
+                    <strong>ACM §1.6 (Respect Privacy / Data Integrity):</strong> The leaked hardcoded password demonstrated disregard for security practices.<br><br>
+                    <strong>ACM §2.6 (Professional Reputation):</strong> Dishonesty harms not only your reputation but also trust in the entire profession.<br><br>
+                    <strong>🔴 Verdict:</strong> Severe ethics violation. Lies destroy trust permanently.
+                </div>
+            `
         },
         end_sqq: {
             emoji: "🌱",
@@ -210,8 +232,15 @@
             lesson: "📌 Lesson: Honesty under pressure is a rare and valuable skill.",
             acmLink: "https://dl.acm.org/doi/10.1145/3377811.3380370",
             acmText: "ACM: Reflection in Teams →",
-            mainAudioFile: "speed-quality-quality.mp3",
-            ethicsAnalysis: `<div class="ethics-analysis"><strong>⚖️ ACM Code of Ethics Analysis:</strong><br><br><strong>§1.3 (Honesty):</strong> You demonstrated ethical courage by admitting the mistake.<br><br><strong>§2.2 (Continuous Learning):</strong> Using failure as a learning opportunity.<br><br><strong>§3.3 (Transparency):</strong> Full disclosure serves stakeholders.<br><br><strong>✅ Verdict:</strong> An ethical exemplar.</div>`
+            ethicsAnalysis: `
+                <div class="ethics-analysis">
+                    <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
+                    <strong>ACM §1.3 (Honesty):</strong> You demonstrated ethical courage by publicly admitting the mistake.<br><br>
+                    <strong>ACM §2.2 (Continuous Learning):</strong> Using failure as a learning opportunity aligns with ACM principles.<br><br>
+                    <strong>ACM §3.3 (Transparency):</strong> Full disclosure of technical limitations serves stakeholders' right to know.<br><br>
+                    <strong>✅ Verdict:</strong> An ethical exemplar. Honest failure builds more long-term trust than hidden success.
+                </div>
+            `
         },
         end_qss: {
             emoji: "💔",
@@ -221,8 +250,15 @@
             lesson: "📌 Lesson: Quality can be destroyed in half an hour. Don't change strategy at the last minute.",
             acmLink: "https://dl.acm.org/doi/10.1145/3540250.3549093",
             acmText: "ACM: Managing Quality Under Pressure →",
-            mainAudioFile: "quality-speed-speed.mp3",
-            ethicsAnalysis: `<div class="ethics-analysis"><strong>⚖️ ACM Code of Ethics Analysis:</strong><br><br><strong>§2.3 (Professional Competence):</strong> Untested features at the last minute violated thoroughness.<br><br><strong>§1.2 (Avoid Harm):</strong> Unstable demo disappointed stakeholders.<br><br><strong>§4.1 (Team Culture):</strong> Panic creates a toxic environment.<br><br><strong>⚠️ Verdict:</strong> Quality takes months to build, minutes to destroy.</div>`
+            ethicsAnalysis: `
+                <div class="ethics-analysis">
+                    <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
+                    <strong>ACM §2.3 (Professional Competence):</strong> Adding untested features at the last minute violated professional thoroughness.<br><br>
+                    <strong>ACM §1.2 (Avoid Harm):</strong> Unstable demo confused the team and disappointed stakeholders.<br><br>
+                    <strong>ACM §4.1 (Team Culture):</strong> Panic-driven decisions create a toxic environment.<br><br>
+                    <strong>⚠️ Verdict:</strong> Quality takes months to build and minutes to destroy. Panic is no excuse for abandoning ethics.
+                </div>
+            `
         },
         end_qsq: {
             emoji: "⚖️",
@@ -232,8 +268,15 @@
             lesson: "📌 Lesson: Balancing speed and quality is an art—and it pays off.",
             acmLink: "https://dl.acm.org/doi/10.1145/3368089.3409701",
             acmText: "ACM: Finding Balance in Teams →",
-            mainAudioFile: "quality-speed-quality.mp3",
-            ethicsAnalysis: `<div class="ethics-analysis"><strong>⚖️ ACM Code of Ethics Analysis:</strong><br><br><strong>§2.1 (Stakeholder Value):</strong> You balanced speed and quality.<br><br><strong>§3.2 (Competence):</strong> You assessed team capabilities under constraints.<br><br><strong>§4.2 (Team Support):</strong> You showed ethical leadership.<br><br><strong>✅ Verdict:</strong> Ethical balance achieved.</div>`
+            ethicsAnalysis: `
+                <div class="ethics-analysis">
+                    <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
+                    <strong>ACM §2.1 (Stakeholder Value):</strong> You balanced competing demands—speed for business, quality for users.<br><br>
+                    <strong>ACM §3.2 (Competence):</strong> You accurately assessed the team's capabilities under constraints.<br><br>
+                    <strong>ACM §4.2 (Team Support):</strong> By not abandoning the team in chaos, you demonstrated ethical leadership.<br><br>
+                    <strong>✅ Verdict:</strong> Ethical balance achieved. Practical application of 'good enough' without violating standards.
+                </div>
+            `
         },
         end_qqs: {
             emoji: "🎯",
@@ -243,8 +286,15 @@
             lesson: "📌 Lesson: Principles without flexibility lead nowhere.",
             acmLink: "https://dl.acm.org/doi/10.1145/3540250.3549064",
             acmText: "ACM: Engineering Trade-offs →",
-            mainAudioFile: "quality-quality-speed.mp3",
-            ethicsAnalysis: `<div class="ethics-analysis"><strong>⚖️ ACM Code of Ethics Analysis:</strong><br><br><strong>§1.4 (Fairness):</strong> Recognizing excessive quality shows maturity.<br><br><strong>§2.2 (Professional Growth):</strong> Acknowledging over-optimization is improvement.<br><br><strong>§3.3 (Honest Self-Assessment):</strong> You were honest about misjudging.<br><br><strong>✅ Verdict:</strong> Ethically sound.</div>`
+            ethicsAnalysis: `
+                <div class="ethics-analysis">
+                    <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
+                    <strong>ACM §1.4 (Fairness):</strong> Recognizing when commitment to quality becomes excessive shows ethical maturity.<br><br>
+                    <strong>ACM §2.2 (Professional Growth):</strong> Acknowledging over-optimization is a form of continuous improvement.<br><br>
+                    <strong>ACM §3.3 (Honest Self-Assessment):</strong> You were honest about misjudging the balance.<br><br>
+                    <strong>✅ Verdict:</strong> Ethically sound. Recalibrating principles based on context is wisdom, not weakness.
+                </div>
+            `
         },
         end_qqq: {
             emoji: "🏆",
@@ -254,8 +304,15 @@
             lesson: "📌 Lesson: Code quality is a marathon. Victory isn't always visible right away.",
             acmLink: "https://dl.acm.org/doi/10.1145/3540250.3549099",
             acmText: "ACM: Engineering Culture →",
-            mainAudioFile: "quality-quality-quality.mp3",
-            ethicsAnalysis: `<div class="ethics-analysis"><strong>⚖️ ACM Code of Ethics Analysis:</strong><br><br><strong>§2.1 (Public Good):</strong> You served the engineering community.<br><br><strong>§1.1 (Contribute to Society):</strong> Sharing your approach fulfills ACM's highest principle.<br><br><strong>§3.1 (High Standards):</strong> You maintained standards even at a cost.<br><br><strong>✅ Verdict:</strong> Ethical excellence.</div>`
+            ethicsAnalysis: `
+                <div class="ethics-analysis">
+                    <strong>⚖️ Analysis based on ACM Code of Ethics:</strong><br><br>
+                    <strong>ACM §2.1 (Public Good):</strong> By prioritizing maintainable code, you served the broader engineering community.<br><br>
+                    <strong>ACM §1.1 (Contribute to Society):</strong> Sharing your approach at meetups fulfills ACM's highest principle.<br><br>
+                    <strong>ACM §3.1 (High Standards):</strong> You maintained professional standards even when it cost you victory.<br><br>
+                    <strong>✅ Verdict:</strong> Ethical excellence. The long game—building reputation through quality and education—is the most sustainable path.
+                </div>
+            `
         }
     };
 
@@ -353,7 +410,7 @@
         if (contextSpeakerBtn && scenario.contextAudioFile) {
             contextSpeakerBtn.addEventListener("click", (e) => {
                 e.stopPropagation();
-                playContextAudio(scenario.contextAudioFile);
+                speakContextOnly(scenario.context);
             });
         }
         
@@ -383,28 +440,8 @@
     function init() {
         const root = document.getElementById("appRoot");
         renderStartScreen(root);
-        
-        // Основная кнопка озвучивания (справа снизу)
         document.getElementById("speakerBtn")?.addEventListener("click", () => {
-            if (!gameState.started) {
-                playAudioFile("greeting.mp3");
-                return;
-            }
-            
-            const currentStep = gameState.step;
-            
-            if (currentStep && currentStep.startsWith("end_")) {
-                const ending = endings[currentStep];
-                if (ending && ending.mainAudioFile) {
-                    playAudioFile(ending.mainAudioFile);
-                }
-                return;
-            }
-            
-            const scenario = scenarios[currentStep];
-            if (scenario && scenario.mainAudioFile) {
-                playAudioFile(scenario.mainAudioFile);
-            }
+            if (currentSpeakText) speakText(currentSpeakText);
         });
     }
     init();
