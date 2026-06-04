@@ -1,0 +1,124 @@
+@font-face {
+    font-family: 'Golos UI';
+    src: url('fonts/Golos_UI/Golos-UI_Regular.ttf') format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Golos UI';
+    src: url('fonts/Golos_UI/Golos-UI_Medium.ttf') format('truetype');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'Golos UI';
+    src: url('fonts/Golos_UI/Golos-UI_Bold.ttf') format('truetype');
+    font-weight: 700;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 1440px;
+    height: 1080px;
+    background: #FFFFFF;
+    display: flex;   
+    flex-direction: row;
+    align-items: center; 
+}
+
+.container__main {
+    width: 731px;
+    height: 1080px;
+    position: relative;
+}
+
+.container__image {
+    width: 462px;
+    height: 501px;
+    position: relative;
+    top: 289px;
+    left: 269px;
+}
+
+.container__title {
+    width: 385px;
+    height: 180px;
+    position: absolute;    
+    top: 183px;              
+    left: 179px;
+    font-family: 'Golos UI', Arial;
+    font-weight: 700;
+    font-size: 140px;
+    line-height: 180px;
+    letter-spacing: -1.5px;
+    color: #222222;
+    margin: 0;
+}
+
+.login-form {
+    width: 343px;
+    flex-shrink: 0;         
+    margin-left: 107px;   
+    display: flex;           
+    flex-direction: column; 
+    gap: 0;       
+}
+
+.login-form__email-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+
+.login-form__password-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 22px;
+}
+
+.login-form__text {
+    font-family: 'Golos UI', Arial;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18px;
+    letter-spacing: -0.15px;
+    margin: 0 0 5px 0;
+    color: #222222;
+}
+
+.login-form__input {
+    width: 343px;
+    height: 44px;
+    border: none;
+    padding: 0 12px;
+    margin-bottom: 5px;
+    background: #F2F3F5;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.login-form__hint {
+    font-family: 'Golos UI', Arial;
+    font-weight: 400;
+    font-size: 13px;
+    letter-spacing: -0.08px;
+    margin: 0;
+    color: #808080;
+}
+
+.login-form__button {
+    width: 343px;
+    height: 48px;
+    background: #222222;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Golos UI', Arial;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    color: #FFFFFF;
+}

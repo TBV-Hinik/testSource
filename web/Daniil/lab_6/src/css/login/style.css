@@ -1,0 +1,118 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Golos Text', sans-serif;
+    overflow: hidden;
+}
+
+.login-page {
+    display: flex;
+    height: 100vh;
+    width: 900px;
+    margin: 0 auto;
+}
+
+.login-hero {
+    width: 450px;
+    position: relative;
+}
+
+.login-hero__image-wrapper {
+    position: absolute;
+    width: 380px;
+    height: 412px;
+    left: 40px;
+    top: calc(50% - 206px);
+    overflow: hidden;
+}
+
+.login-hero__image {
+    width: 380px;
+    height: auto;
+    display: block;
+    margin-top: 0;
+}
+
+.login-hero__title {
+    position: absolute;
+    left: -50px;
+    top: 80px;
+    font-size: 120px;
+    font-weight: 700;
+    color: #222;
+    white-space: nowrap;
+}
+
+.login-form-wrapper {
+    width: 450px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-form {
+    width: 300px;
+}
+
+form.login-form {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #222;
+    cursor: pointer;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    background: #f2f3f5;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.form-group input:focus {
+    outline: none;
+}
+
+.form-group span {
+    display: block;
+    margin-top: 6px;
+    font-size: 11px;
+    color: #808080;
+}
+
+.form-group:last-child span {
+    display: none;
+}
+
+button {
+    width: 100%;
+    height: 40px;
+    background: #222;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #000;
+}
