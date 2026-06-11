@@ -1,0 +1,8 @@
+$kind: http-request
+url: https://geocode-maps.yandex.ru/v1/?apikey=f1b5f16e-4526-4ff3-b06a-e781a178fe03&geocode=бульвар+Мухаммед+Бин+Рашид+1&format=json
+method: GET
+queryParams:
+  apikey: f1b5f16e-4526-4ff3-b06a-e781a178fe03
+  geocode: бульвар+Мухаммед+Бин+Рашид+1
+  format: json
+order: 1000

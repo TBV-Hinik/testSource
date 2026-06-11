@@ -4,34 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вход</title>
-    <link href="https://fonts.googleapis.com/css2?family=Golos+Text&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/lab_7/src/css/login/style.css">
 </head>
 <body>
     <div class="login-page">
+
         <div class="login-hero">
-            <div class="login-hero__image-wrapper">
-                <img class="login-hero__image" src="/lab_7/src/images/men_on_mount.png" alt="men">
-            </div>
+            <a href="/lab_7/src/images/men_on_mount.png" class="login-hero__image-wrapper" title="Человек на вершине горы">
+                <img class="login-hero__image" src="/lab_7/src/images/men_on_mount.png" alt="men on mount">
+            </a>
             <h1 class="login-hero__title">Войти</h1>
         </div>
 
-        <div class="login-form-wrapper">
-            <form class="login-form" action="/lab_7/home.html">
-                <div class="form-group">
-                    <span for="email">Электропочта</span>
-                    <input type="email" id="email" required>
-                    <span>Введите электропочту в формате *****@***.**</span>
-                </div>
+        <form class="login-form" action="/lab_7/home.php">
+            <div class="login-form__group">
+                <span class="login-form__span" for="email">Электропочта</span>
+                <input class="login-form__input" type="email" id="email" required>
+                <span class="login-form__hint">Введите электропочту в формате *****@***.**</span>
+            </div>
 
-                <div class="form-group">
-                    <span for="password">Пароль</span>
-                    <input type="password" id="password" required>
-                </div>
+            <div class="login-form__group">
+                <span class="login-form__span" for="password">Пароль</span>
+                <input class="login-form__input" type="password" id="password" required>
+            </div>
 
-                <button type="submit">Продолжить</button>
-            </form>
-        </div>
+            <button class="login-form__button" type="submit">Продолжить</button>
+        </form>
+
     </div>
 </body>
 </html>

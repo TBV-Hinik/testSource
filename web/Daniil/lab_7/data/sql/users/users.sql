@@ -1,7 +1,6 @@
--- USE blog;
+USE blog;
 
--- Вставка пользователей
-INSERT INTO `user` (
+INSERT INTO `users` (
     `username`,
     `login`,
     `description_user`,
@@ -11,13 +10,13 @@ INSERT INTO `user` (
     'Ваня Денисов',
     'vanya_denisov',
     'Привет! Я системный аналитик в ACME :) Тут моя жизнь только для самых классных!',
-    '$2y$10$YourHashedPasswordHere1',
-    '/src/images/vanya_denisov.jpg'
+    'password123',
+    '/lab_2/src/images/vanya_denisov.jpg'
 ),
 (
     'Лиза Дёмина',
     'liza_dyomina',
     'Люблю книги, рыб и уютные вечера. Делюсь моментами счастья.',
-    '$2y$10$YourHashedPasswordHere2',
-    '/src/images/liza_dyomina.jpg'
+    'password456',
+    '/lab_2/src/images/liza_dyomina.jpg'
 );

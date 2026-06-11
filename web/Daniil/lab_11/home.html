@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лента | Социальная сеть</title>
+    <link rel="stylesheet" href="/lab_11/src/css/home/style.css">
+</head>
+<body>
+    <div class="app">
+        
+        <nav class="sidebar">
+            <a href="home.html" class="sidebar__item">
+                <img class="sidebar__icon" src="/lab_11/src/images/home_select.png" alt="home">
+            </a>
+            <a href="profile.html" class="sidebar__item">
+                <img class="sidebar__icon" src="/lab_11/src/images/profile.png" alt="profile">
+            </a>
+            <a href="#" class="sidebar__item">
+                <img class="sidebar__icon" src="/lab_11/src/images/add.png" alt="add">
+            </a>
+        </nav>
+
+        <main class="feed">
+            <div class="post">
+                <div class="post__header">
+                    <div class="post__user-info">
+                        <img class="post__avatar" src="/lab_11/src/images/vanya_denisov.jpg" alt="vanya denisov">
+                        <span class="post__username">Ваня Денисов</span>
+                    </div>
+                    <button class="post__edit">
+                        <img class="post__edit-icon" src="/lab_11/src/images/edit_button.png" alt="edit">
+                    </button>
+                </div>
+
+                <div class="post__photo">
+                    <img class="post__image" src="/lab_11/src/images/snowy_city_crosswalk.jpg" alt="snowy city crosswalk">
+                    <div class="post__photo-counter">1 / 3</div>
+                    <button class="slider-btn slider-btn--next">
+                        <img class="slider-btn__icon" src="/lab_11/src/images/slider_button_right.png" alt="next">
+                    </button>
+                </div>
+
+                <div class="post__reactions">
+                    <button class="like-btn">
+                        <img class="like-btn__icon" src="/lab_11/src/images/heart.png" alt="heart">
+                        <span class="like-btn__count">203</span>
+                    </button>
+                </div>
+
+                <div class="post__caption">
+                    Так красиво сегодня на улице! Настоящая зима)) Вспоминается Бродский: «Поздно ночью, в уснувшей долине, на самом дне, в городке, занесенном снегом по ручку двери...»
+                </div>
+                <button class="post__more">ещё</button>
+                <div class="post__date">2 часа назад</div>
+            </div>
+
+            <div class="post">
+                <div class="post__header">
+                    <div class="post__user-info">
+                        <img class="post__avatar" src="/lab_11/src/images/liza_dyomina.jpg" alt="liza dyomina">
+                        <span class="post__username">Лиза Дёмина</span>
+                    </div>
+                </div>
+
+                <div class="post__photo">
+                    <img class="post__image" src="/lab_11/src/images/book_fish_on_table.jpg" alt="book fish on table">
+                </div>
+
+                <div class="post__reactions">
+                    <button class="like-btn like-btn--red">
+                        <img class="like-btn__icon" src="/lab_11/src/images/heart.png" alt="heart">
+                        <span class="like-btn__count">534</span>
+                    </button>
+                </div>
+
+                <div class="post__date">1 день назад</div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

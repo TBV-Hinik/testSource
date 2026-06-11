@@ -70,67 +70,70 @@ body {
     font-family: 'Golos UI', sans-serif;
 }
 
-.login-form-wrapper {
+.login-form {
     width: 450px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 15px;
 }
 
-.login-form {
+.login-form__group {
     width: 300px;
-}
-
-.form-group {
-    margin-bottom: 20px;
     font-family: 'Golos UI', sans-serif;
 }
 
-.form-group span:first-of-type {
+.login-form__span {
     display: block;
-    margin-bottom: 6px;
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 400;
     color: #222;
     cursor: pointer;
+    margin-bottom: 6px;
 }
 
-.form-group input {
+.login-form__input {
     width: 100%;
     padding: 10px;
     background: #f2f3f5;
     border: none;
     border-radius: 8px;
     font-size: 13px;
+    font-family: 'Golos UI', sans-serif;
 }
 
-.form-group input:focus {
+.login-form__input:focus {
     outline: none;
 }
 
-.form-group span:last-of-type {
+.login-form__hint {
     display: block;
-    margin-top: 6px;
     font-size: 11px;
+    font-weight: 400;
     color: #808080;
+    margin-top: 6px;
+    cursor: default;
 }
 
-.form-group:last-child span:last-of-type {
+.login-form__group:last-child .login-form__hint {
     display: none;
 }
 
-button {
-    width: 100%;
+.login-form__button {
+    width: 300px;
     height: 40px;
+    margin-top: 10px;
     background: #222;
     border: none;
     border-radius: 8px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 400;
     color: #fff;
     cursor: pointer;
+    font-family: 'Golos UI', sans-serif;
 }
 
-button:hover {
+.login-form__button:hover {
     background: #000;
 }

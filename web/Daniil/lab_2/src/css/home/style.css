@@ -1,18 +1,18 @@
 @font-face {
     font-family: 'Golos UI';
-    src: url('/lab_2/src/fonts/GolosUI-Regular.ttf') format('truetype');
+    src: url('/lab_2/src/fonts/Golos-UI_Regular.ttf') format('truetype');
     font-weight: 400;
 }
 
 @font-face {
     font-family: 'Golos UI';
-    src: url('/lab_2/src/fonts/GolosUI-Medium.ttf') format('truetype');
+    src: url('/lab_2/src/fonts/Golos-UI_Medium.ttf') format('truetype');
     font-weight: 500;
 }
 
 @font-face {
     font-family: 'Golos UI';
-    src: url('/lab_2/src/fonts/GolosUI-Bold.ttf') format('truetype');
+    src: url('/lab_2/src/fonts/Golos-UI_Bold.ttf') format('truetype');
     font-weight: 700;
 }
 
@@ -48,7 +48,7 @@ body {
     padding-top: 40px;
 }
 
-.menu-item {
+.sidebar__item {
     width: 40px;
     height: 40px;
     display: flex;
@@ -57,11 +57,11 @@ body {
     border-radius: 10px;
 }
 
-.menu-item:hover {
+.sidebar__item:hover {
     background: rgba(0,0,0,0.05);
 }
 
-.icon {
+.sidebar__icon {
     width: 32px;
     height: 32px;
 }
@@ -87,20 +87,20 @@ body {
     margin-bottom: 16px;
 }
 
-.user-info {
+.post__user-info {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.user-info__avatar {
+.post__avatar {
     width: 32px;
     height: 32px;
     border-radius: 6px;
     object-fit: cover;
 }
 
-.user-info__name {
+.post__username {
     font-weight: 500;
     font-size: 14px;
     letter-spacing: -0.15px;
@@ -135,7 +135,7 @@ body {
     object-fit: cover;
 }
 
-.photo-counter {
+.post__photo-counter {
     position: absolute;
     top: 12px;
     right: 12px;
@@ -227,15 +227,4 @@ body {
     font-size: 14px;
     letter-spacing: -0.15px;
     color: rgba(34,34,34,0.5);
-}
-
-@media (max-width: 600px) {
-    .post {
-        width: 100%;
-    }
-    .post__photo {
-        width: 100%;
-        height: auto;
-        aspect-ratio: 1;
-    }
 }
